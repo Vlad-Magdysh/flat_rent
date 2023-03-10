@@ -17,3 +17,4 @@ class Config:
     # TODO develop feature with several database controllers. Find a way how to flexible specify selected controller
     DB_CONTROLLER = "MongoController"
     MONGO_URI = "mongodb://localhost:27017/"
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "secret_key"
