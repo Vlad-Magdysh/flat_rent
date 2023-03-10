@@ -1,3 +1,4 @@
+import logging
 import os
 from collections import defaultdict
 
@@ -6,7 +7,7 @@ from telethon.sync import TelegramClient
 
 from config import Config
 from fields import MessageExtractedFields
-
+logging.getLogger('telethon').setLevel(logging.WARNING)
 
 class TelegramService:
     """
