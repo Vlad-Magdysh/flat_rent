@@ -14,3 +14,6 @@ class Config:
     GROUP_NAME = os.getenv("GROUP_NAME")
     PHOTOS_ROOT = os.getenv("PHOTOS_ROOT")
     SESSION_PATH = os.getenv("SESSION_PATH", os.path.join(DEFAULT_SESSIONS_DIR, DEFAULT_SESSION_NAME))
+    # TODO develop feature with several database controllers. Find a way how to flexible specify selected controller
+    DB_CONTROLLER = "MongoController"
+    MONGO_URI = "mongodb://localhost:27017/"
