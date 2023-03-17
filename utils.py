@@ -21,3 +21,8 @@ def serialize_everything(obj):
         except Exception:
             print(f"key={attr} val={val} were not serialized")
     return d1
+
+
+def get_cleared_dict(d1: dict):
+    return {k: v for k, v in d1.items() if k is not None}
+

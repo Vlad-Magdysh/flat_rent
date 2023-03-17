@@ -6,19 +6,25 @@ from db_controllers import get_current_controller_class
 from telegram_service import TelegramService
 from config import Config
 from fields import MessageExtractedFields
+from message_parser import Parser
+from message_parser.parser_strategy import DefaultStrategy
 
 db_controller = get_current_controller_class(Config.DB_CONTROLLER)
 db_controller = db_controller()
 
-tl_service = TelegramService()
+parser = Parser()
+parser.set_strategy(DefaultStrategy())
+
+tl_service = TelegramService(parser=parser)
 
 
 @celery_app.task
 def check_publications():
     # Get the latest 10 messages from the channel
     latest_msg = db_controller.get_last_added_message()
-    logging.info(f"Last message id {latest_msg[MessageExtractedFields.MESSAGE_ID]}")
-    msg_bodies = tl_service.get_messages(min_message_id=latest_msg[MessageExtractedFields.MESSAGE_ID])
+    last_id = latest_msg.get(MessageExtractedFields.MAX_ID, latest_msg[MessageExtractedFields.MESSAGE_ID])
+    logging.info(f"Last message id {last_id}")
+    msg_bodies = tl_service.get_messages(min_message_id=last_id)
     logging.info(f"Received message IDs {list(msg_bodies.keys())}")
     msg_to_insert = list(msg_bodies.values())
     if msg_to_insert:
